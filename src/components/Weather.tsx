@@ -10,9 +10,9 @@ import {
 import "./Weather.css";
 
 const Weather = () => {
-  const [city, setCity] = useState("");
-  const [weatherData, setWeatherData] = useState(null);
-  const [error, setError] = useState("");
+  const [city, setCity] = useState<string>("");
+  const [weatherData, setWeatherData] = useState<any>(null);
+  const [error, setError] = useState<string>("");
 
   const API_KEY = "973fff3498ae9327464ee9d4138e5f7c"; // Thay bằng API Key của bạn
 
@@ -78,14 +78,18 @@ const Weather = () => {
 
       const data = await response.json();
       setWeatherData(data);
-    } catch (err) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unknown error occurred.");
+      }
       setWeatherData(null);
     }
   };
 
   // Mã icon OpenWeatherMap
-  const getIcon = (icon) => {
+  const getIcon = (icon: string) => {
     switch (icon) {
       case "01d":
         return <FontAwesomeIcon icon={faSun} className="weather-icon" />;
